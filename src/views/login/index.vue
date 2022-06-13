@@ -20,7 +20,7 @@
         </span>
         <el-input
           ref="username"
-          v-model="loginForm.username"
+          v-model="loginForm.mobile"
           placeholder="请输入手机号"
           name="username"
           type="text"
@@ -70,6 +70,7 @@
 
 <script>
 import { validMobile } from "@/utils/validate";
+import { mapActions } from "vuex";
 
 export default {
   name: "Login",
@@ -84,11 +85,11 @@ export default {
     };
     return {
       loginForm: {
-        username: "13800000002",
+        mobile: "13800000002",
         password: "123456",
       },
       loginRules: {
-        username: [
+        mobile: [
           { required: true, trigger: "blur", message: "手机号不能为空" },
           { trigger: "blur", validator: validateMobile },
         ],
@@ -116,6 +117,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["user/login"]), // 引入方法
     showPwd() {
       if (this.passwordType === "password") {
         this.passwordType = "";
@@ -127,21 +129,36 @@ export default {
       });
     },
     handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
-        if (valid) {
-          this.loading = true;
-          this.$store
-            .dispatch("user/login", this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || "/" });
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
+      // 表单的手动校验
+      this.$refs.loginForm.validate(async (isOK) => {
+        if (isOK) {
+          try {
+            this.loading = true;
+            // 只有校验通过  才去调用action
+            await this["user/login"](this.loginForm);
+            // 应该登录成功后
+            // async标记的函数是一个promise对象
+            this.$router.push("/");
+          } catch (error) {
+            console.log(error);
+          } finally {
+            // 不论执行 try 还是catch   都关闭
+            this.loading = false;
+          }
+
+          // this.loading = true;
+          // this.$store
+          //   .dispatch("user/login", this.loginForm)
+          //   .then(() => {
+          //     this.$router.push({ path: this.redirect || "/" });
+          //     this.loading = false;
+          //   })
+          //   .catch(() => {
+          //     this.loading = false;
+          //   });
+          // } else {
+          // console.log("error submit!!");
+          // return false;
         }
       });
     },

@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'vue_admin_template_token'
-
+const TokenKey = 'hrsass-ihrm-token' // 设置一个独一无二的key
+const timeKey = "hrsass-timestamp-key"
 export function getToken() {
   return Cookies.get(TokenKey)
 }
@@ -12,4 +12,12 @@ export function setToken(token) {
 
 export function removeToken() {
   return Cookies.remove(TokenKey)
+}
+// 获取时间戳
+export function getTImeStamp() {
+  return Cookies.get(timeKey)
+}
+// 设置时间戳
+export function setTimeStamp() {
+  Cookies.set(timeKey, Date.now())
 }
