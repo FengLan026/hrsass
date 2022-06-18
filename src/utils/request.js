@@ -1,22 +1,24 @@
 import axios from 'axios'
-import { Message } from "element-ui"
 import store from "vuex"
+import { Message } from "element-ui"
 import { getTImeStamp } from '@/utils/auth'
 const TimeOut = 3600
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
+  // 当执行 npm run dev => .evn.development => /api => 跨域代理
+  baseURL: process.env.VUE_APP_BASE_API, // npm run dev => /api npm run build => /prod-api
   timeout: 5000 // 设置超时时间
-}
-)
+})
+
+// 请求拦截器
 service.interceptors.request.use(config => {
-  if (store.mapGetters.token) {
+  // 在这个位置需要统一的去注入token
+  if (store.getters.token) {
     if (IsCheckTimeOut()) {
-      
       return Promise.reject(new Error('token超时了'))
     }
-    config.headers['Authorization'] = `Bearer ${store.mapGetters.token}`
+    config.headers['Authorization'] = `Bearer ${store.getters.token}`
   }
-  return config
+  return config // 必须返回配置
 }, error => {
   return Promise.reject(error)
 }
