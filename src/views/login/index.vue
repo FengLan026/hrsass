@@ -10,7 +10,7 @@
     >
       <div class="title-container">
         <h3 class="title">
-          <img src="@/assets/common/login-logo.png" alt="" />
+          <img src="@/assets/common/login-logo.png" alt="">
         </h3>
       </div>
 
@@ -57,8 +57,7 @@
         type="primary"
         style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin"
-        >登录</el-button
-      >
+      >登录</el-button>
 
       <div class="tips">
         <span style="margin-right: 20px">账号: 13800000002</span>
@@ -69,11 +68,11 @@
 </template>
 
 <script>
-import { validMobile } from "@/utils/validate";
-import { mapActions } from "vuex";
+import { validMobile } from '@/utils/validate'
+import { mapActions } from 'vuex'
 
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     const validateMobile = (rule, value, callback) => {
       // if (!validMobile(value)) {
@@ -81,69 +80,69 @@ export default {
       // } else {
       //   callback();
       // }
-      validMobile(value) ? callback() : callback(new Error("手机号格式错误"));
-    };
+      validMobile(value) ? callback() : callback(new Error('手机号格式错误'))
+    }
     return {
       loginForm: {
-        mobile: "13800000002",
-        password: "123456",
+        mobile: '13800000002',
+        password: '123456'
       },
       loginRules: {
         mobile: [
-          { required: true, trigger: "blur", message: "手机号不能为空" },
-          { trigger: "blur", validator: validateMobile },
+          { required: true, trigger: 'blur', message: '手机号不能为空' },
+          { trigger: 'blur', validator: validateMobile }
         ],
         password: [
-          { required: true, trigger: "blur", message: "手机号不能为空" },
+          { required: true, trigger: 'blur', message: '密码不能为空' },
           {
-            trigger: "blur",
+            trigger: 'blur',
             min: 6,
             max: 16,
-            message: "密码长度在6-16位",
-          },
-        ],
+            message: '密码长度在6-16位'
+          }
+        ]
       },
       loading: false,
-      passwordType: "password",
-      redirect: undefined,
-    };
+      passwordType: 'password',
+      redirect: undefined
+    }
   },
   watch: {
     $route: {
-      handler: function (route) {
-        this.redirect = route.query && route.query.redirect;
+      handler: function(route) {
+        this.redirect = route.query && route.query.redirect
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   methods: {
-    ...mapActions(["user/login"]), // 引入方法
+    ...mapActions(['user/login']), // 引入方法
     showPwd() {
-      if (this.passwordType === "password") {
-        this.passwordType = "";
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
       } else {
-        this.passwordType = "password";
+        this.passwordType = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.password.focus();
-      });
+        this.$refs.password.focus()
+      })
     },
     handleLogin() {
       // 表单的手动校验
-      this.$refs.loginForm.validate(async (isOK) => {
+      this.$refs.loginForm.validate(async(isOK) => {
         if (isOK) {
           try {
-            this.loading = true;
+            this.loading = true
             // 只有校验通过  才去调用action
-            await this["user/login"](this.loginForm);
+            await this['user/login'](this.loginForm)
             // 应该登录成功后
             // async标记的函数是一个promise对象
-            this.$router.push("/");
+            this.$router.push('/')
           } catch (error) {
-            console.log(error);
+            console.log(error)
           } finally {
             // 不论执行 try 还是catch   都关闭
-            this.loading = false;
+            this.loading = false
           }
 
           // this.loading = true;
@@ -160,10 +159,10 @@ export default {
           // console.log("error submit!!");
           // return false;
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss">

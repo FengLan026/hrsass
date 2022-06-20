@@ -14,7 +14,7 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="@/assets/common/bigUserHeader.png" class="user-avatar" />
+          <img v-imgerror="defaultImg" :src="staffPhoto" class="user-avatar">
           <span class="name">管理员</span>
           <i class="el-icon-caret-bottom" />
         </div>
@@ -35,28 +35,33 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex'
 // import Breadcrumb from "@/components/Breadcrumb";
-import Hamburger from "@/components/Hamburger";
+import Hamburger from '@/components/Hamburger'
 
 export default {
   components: {
     // Breadcrumb,
-    Hamburger,
+    Hamburger
+  },
+  data() {
+    return {
+      defaultImg: require('@/assets/common/head.jpg')
+    }
   },
   computed: {
-    ...mapGetters(["sidebar", "avatar"]),
+    ...mapGetters(['sidebar', 'name', 'staffPhoto'])
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch("app/toggleSideBar");
+      this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch("user/logout");
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`);
-    },
-  },
-};
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login`)// 直接跳到登录
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

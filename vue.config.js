@@ -27,8 +27,8 @@ module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: false,
-  // lintOnSave: process.env.NODE_ENV === 'development',
+  // lintOnSave: false,
+  lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
     port: port,
@@ -45,7 +45,7 @@ module.exports = {
       // 本地的前端 => 另一个服务器发请求 ( 跨域 行不通 )
       '/api': {
         target: 'http://ihrm-java.itheima.net', // 我们要代理的地址
-        changeOrigin: true, // 是否跨域, 需要设置此值为true 才可以让本地服务代理我们发出请求
+        changeOrigin: true // 是否跨域, 需要设置此值为true 才可以让本地服务代理我们发出请求
         // 路径重写
         // pathRewrite: {
         //   // 重新路由  localhost: 8888/api/login => www.baidu.com/api/login

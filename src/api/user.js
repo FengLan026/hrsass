@@ -6,7 +6,7 @@ export function login(data) {
   return request({
     url: '/sys/login',
     method: 'POST',
-    data,
+    data
   })
 }
 // 获取用户资料接口
@@ -16,7 +16,9 @@ export function getUserInfo() {
     method: 'post'
   })
 }
-
-export function logout() {
-
+// 根据用户的id获取用户的详情
+export function getUserDetailById(id) {
+  return request({
+    url: `/sys/user/${id}`
+  })
 }
