@@ -14,7 +14,7 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img v-imgerror="defaultImg" :src="staffPhoto" class="user-avatar">
+          <img v-imageerror="defaultImg" :src="staffPhoto" class="user-avatar">
           <span class="name">管理员</span>
           <i class="el-icon-caret-bottom" />
         </div>

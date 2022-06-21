@@ -115,3 +115,21 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+// 将列表型数据转换为树型数据 => 递归
+// 遍历树形 有一个重点 要先找一个头
+export function tranListToTreeData(list, rootValue) {
+  const arr = []
+  list.forEach(item => {
+    if (item.pid === rootValue) {
+      // 找到之后 就要去找item 下面有没有子节点
+      const children = tranListToTreeData(list, item.id)
+      if (children.length > 0) {
+        // 如果children的长度不为0, 表示找到了子节点
+        item.children = children
+      }
+      arr.push(item) // 将内容加入到数组中
+    }
+  })
+  return arr
+}
