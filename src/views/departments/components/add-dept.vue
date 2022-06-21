@@ -1,6 +1,6 @@
 <template>
   <!-- 新增部门的弹层 -->
-  <el-dialog title="新增部门">
+  <el-dialog title="新增部门" :visible="showDialog">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
     <el-form label-width="120px">
@@ -27,3 +27,17 @@
     </el-row>
   </el-dialog>
 </template>
+<script>
+export default {
+  props: {
+    showDialog: {
+      type: Boolean,
+      default: false
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

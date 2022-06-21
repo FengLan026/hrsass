@@ -17,7 +17,7 @@
             <!-- 具名插槽 -->
             <el-dropdown-menu slot="dropdown">
               <!-- 下拉选项 -->
-              <el-dropdown-item command="add">添加子部门</el-dropdown-item>
+              <el-dropdown-item command="add" @showDialog="showDialog">添加子部门</el-dropdown-item>
               <el-dropdown-item v-if="!isRoot" command="edit">编辑部门</el-dropdown-item>
               <el-dropdown-item v-if="!isRoot" command="del">删除部门</el-dropdown-item>
             </el-dropdown-menu>
@@ -47,8 +47,9 @@ export default {
     operateDepts(type) {
       switch (type) {
         case 'add':
-          // 添加子部门
-
+          // 添加子部门  在当前点击的部门下  添加子部门  => this.treeNode 就是当前点击的部门
+          // 告诉父组件 显示弹窗
+          this.$emit('addDepts', this.treeNode) // 触发showDialog事件 告诉父组件显示弹窗
           break
         case 'edit':
           // 编辑子部门
@@ -74,6 +75,5 @@ export default {
 <style scoped>
  .dropdown-btn{
   cursor: pointer;
-
  }
 </style>>
