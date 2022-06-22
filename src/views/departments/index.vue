@@ -13,7 +13,7 @@
         </el-tree>
       </el-card>
     </div>
-    <add-dept :show-dialog="showDialog" />
+    <add-dept :show-dialog="showDialog" :tree-node="node" />
   </div>
 </template>
 
@@ -30,9 +30,10 @@ export default {
   data() {
     return {
       company: { name: '未来科技有限公司', manager: '负责人' }, // 头部的数据结构
-      departs: [{ name: '总裁办', manager: '曹操', children: [{ name: '董事会', manager: '曹丕' }] },
-        { name: '行政部', manager: '刘备' },
-        { name: '人事部', manager: '孙权' }],
+      // departs: [{ name: '总裁办', manager: '曹操', children: [{ name: '董事会', manager: '曹丕' }] },
+      //   { name: '行政部', manager: '刘备' },
+      //   { name: '人事部', manager: '孙权' }],
+      departs: [],
       defaultProps: {
         label: 'name',
         child: 'manager'
@@ -47,7 +48,7 @@ export default {
   methods: {
     async getDepartments() {
       const result = await getDepartments()
-      this.company = { name: '未来科技有限公司', manager: '负责人' }
+      this.company = { name: '未来科技有限公司', manager: '负责人', id: '' }
       this.departs = tranListToTreeData(result.depts, '')
     },
     // 监听tree-tools中触发的点击添加子部门的事件
