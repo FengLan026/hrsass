@@ -7,7 +7,7 @@ export function getDepartments() {
   })
 }
 
-// 删除组织架构的部门
+// 删除部门
 export function delDepartments(id) {
   return request({
     method: 'delete',
@@ -26,5 +26,21 @@ export function addDepartments(data) {
     url: '/company/department',
     method: 'post',
     data// axios 中的body参数
+  })
+}
+
+// 编辑部门时  获取部门详情
+export function getDepartDetail(id) {
+  return request({
+    url: `/company/department/${id}`
+  })
+}
+
+// 编辑部门时 保存编辑的数据
+export function updateDepartments(data) {
+  return request({
+    url: `/company/department/${data.id}`,
+    method: 'put',
+    data
   })
 }

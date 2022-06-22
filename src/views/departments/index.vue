@@ -4,16 +4,16 @@
       <!-- 组织架构内容--头部 -->
       <el-card class="tree-card">
         <!-- 放置结构内容 -->
-        <TreeTools :tree-node="company" :is-root="true" />
+        <TreeTools :tree-node="company" :is-root="true" @addDepts="addDepts" />
         <!-- 放置一个el-tree -->
         <el-tree :data="departs" :props="defaultProps" :default-expand-all="true" @addDepts="addDepts">
           <!-- 传入内容 插槽内容 会循环多次 有多少节点 就循环多少次 -->
           <!-- 作用域插槽 slot-scope="obj" 接收传递给插槽的数据   data 每个节点的数据对象-->
-          <TreeTools slot-scope="{ data }" :tree-node="data" @delDepts="getDepartments" @addDepts="addDepts" />
+          <TreeTools slot-scope="{ data }" :tree-node="data" @delDepts="getDepartments" @addDepts="addDepts" @editDepts="editDepts" />
         </el-tree>
       </el-card>
     </div>
-    <add-dept :show-dialog="showDialog" :tree-node="node" />
+    <add-dept ref="addDept" :show-dialog.sync="showDialog" :tree-node="node" @addDepts="getDepartments" />
   </div>
 </template>
 
@@ -56,6 +56,13 @@ export default {
       this.showDialog = true // 显示弹窗
       // 记录node
       this.node = node
+    },
+    editDepts(node) {
+      this.showDialog = true // 弹出层
+      // 编辑与新增不会同时点 可使用同一个变量来记录
+      this.node = node
+      // 应该在这里调用获取部门详情的方法
+      this.$refs.addDept.getDepartDetail(node.id)
     }
   }
 }
