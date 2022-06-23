@@ -30,7 +30,7 @@ const mutations = {
 const actions = {
   async login(context, data) {
     // 调用api接口
-    const result = await login(data) // 拿到token
+    const result = await login(data)
     context.commit('setToken', result) // 设置token
     // 拿到token说明登录成功
     setTimeStamp() // 设置当前时间戳
@@ -41,7 +41,7 @@ const actions = {
     // 获取用户详情
     const baseInfo = await getUserDetailById(result.userId)
     context.commit('setUserInfo', { ...result, ...baseInfo }) // 提交到mutations
-    return result //
+    return result
   },
   // 登出操作
   logout(context) {
