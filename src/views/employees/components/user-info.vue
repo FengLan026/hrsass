@@ -37,7 +37,7 @@
       <el-row class="inline-info">
         <el-col :span="12">
           <el-form-item label="手机">
-            <el-input v-model="userInfo.mobile" />
+            <el-input v-model="userInfo.mobile" disabled />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -58,7 +58,7 @@
         <el-col :span="12">
           <el-form-item label="员工头像">
             <!-- 放置上传图片 -->
-
+            <image-upload ref="staffPhoto" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -87,7 +87,7 @@
         </el-form-item>
         <!-- 个人头像 -->
         <!-- 员工照片 -->
-
+        <image-upload />
         <el-form-item label="员工照片">
           <!-- 放置上传图片 -->
         </el-form-item>
@@ -281,7 +281,8 @@
 </template>
 <script>
 import EmployeeEnum from '@/api/constant/employees'
-
+import { getUserDetailById } from '@/api/user'
+import { getPersonalDetail, updatePersonal, saveUserDetailById } from '@/api/employees'
 export default {
   data() {
     return {
@@ -352,6 +353,35 @@ export default {
         remarks: '' // 备注
       }
     }
+  },
+  created() {
+    this.getPersonalDetail()
+    this.getUserDetailById()
+  },
+  methods: {
+    async getUserDetailById() {
+      this.userInfo = await getUserDetailById(this.userId)
+      if (this.userInfo.staffPhoto) {
+        // 如果有值 表示已经有了一个上传成功的图片
+        // 上传成功的图片 有upload标记
+        this.$refs.staffPhoto.fileList = [{ url: this.userInfo.staffPhoto, upload: true }]
+      }
+    },
+    async getPersonalDetail() {
+      this.formData = await getPersonalDetail(this.userId) // 获取员工数据
+      if (this.formData.staffPhoto) {
+        this.$refs.myStaffPhoto.fileList = [{ url: this.formData.staffPhoto, upload: true }]
+      }
+    }
+  },
+  async savePersonal() {
+    await updatePersonal({ ...this.formData, id: this.userId })
+    this.$message.success('保存成功')
+  },
+  async saveUser() {
+    //  调用父组件
+    await saveUserDetailById(this.userInfo)
+    this.$message.success('保存成功')
   }
 }
 </script>
