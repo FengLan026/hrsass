@@ -15,6 +15,11 @@
       <el-card v-loading="loading">
         <el-table :data="list" height="630px">
           <el-table-column label="序号" sortable="" type="index" align="center" />
+          <el-table-column label="头像" width="120px" align="center">
+            <template slot-scope="{ row }">
+              <img v-imageerror="require('@/assets/common/head.jpg')" :src="row.staffPhoto" style="border-radios:50%; width: 100px; height: 100px; padding: 10px" alt="">
+            </template>
+          </el-table-column>
           <el-table-column label="姓名" sortable="" prop="username" align="center" />
           <el-table-column label="工号" sortable="" prop="workNumber" align="center" />
           <el-table-column label="聘用形式" sortable="" prop="formOfEmployment" align="center" :formatter="formatEmployment" />
