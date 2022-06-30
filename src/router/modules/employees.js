@@ -23,6 +23,14 @@ export default {
     meta: {
       title: '员工详情'
     }
+  },
+  {
+    path: 'print/:id?', // 动态路由参数  ? 是指该参数可传可不传
+    component: () => import('@/views/employees/print.vue'),
+    hidden: true,
+    meta: {
+      title: '员工打印'
+    }
   }
   ]
 }

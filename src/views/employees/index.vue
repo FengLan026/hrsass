@@ -17,7 +17,7 @@
           <el-table-column label="序号" sortable="" type="index" align="center" />
           <el-table-column label="头像" width="120px" align="center">
             <template slot-scope="{ row }">
-              <img v-imageerror="require('@/assets/common/head.jpg')" :src="row.staffPhoto" style="border-radios:50%; width: 100px; height: 100px; padding: 10px" alt="">
+              <img v-imageerror="require('@/assets/common/head.jpg')" :src="row.staffPhoto" style="border-radios:50%; width: 100px; height: 100px; padding: 10px" alt="" @click="showQrCode(row.staffPhoto)">
             </template>
           </el-table-column>
           <el-table-column label="姓名" sortable="" prop="username" align="center" />
@@ -57,6 +57,11 @@
     </div>
     <!-- sync修饰符  是子组件改变父组件数据的语法糖-->
     <add-employee :show-dialog.sync="showDialog" />
+    <el-dialog title="二维码" :visible.sync="showCodeDialog">
+      <el-row type="flex" justify="center">
+        <canvas ref="myCanvas" />
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -66,6 +71,7 @@ import { formatDate } from '@/filters'
 import { getEmployeeList, delEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees' // 引入枚举对象
 import AddEmployee from './components/add-employee.vue'
+import QrCode from 'qrcode'
 export default {
   components: { AddEmployee },
   data() {
@@ -77,7 +83,8 @@ export default {
         total: 0
       },
       loading: false, // 显示遮罩层
-      showDialog: false
+      showDialog: false,
+      showCodeDialog: false // 显示二维码弹层
     }
   },
   created() {
@@ -172,6 +179,20 @@ export default {
       })
       // return rows.map(item => Object.keys(headers).map(key => item[headers[key]]))
       // 需要处理时间格式问题
+    },
+    showQrCode(url) {
+      // 只有url存在时弹出
+      if (url) {
+        this.showCodeDialog = true // 页面的渲染是异步的!!!
+        // 有一个方法可以在上一个数据更新完后执行
+        this.$nextTick(() => {
+          QrCode.toCanvas(this.$refs.myCanvas, url) // 将地址转化成二维码
+        })
+      } else {
+        [
+          this.$message.warning('该用户未上传头像')
+        ]
+      }
     }
   }
 }

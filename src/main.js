@@ -23,6 +23,10 @@ import '@/permission' // permission control
 import Components from '@/components'
 
 Vue.use(Components)
+
+import Print from 'vue-print-nb'
+Vue.use(Print)
+
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
