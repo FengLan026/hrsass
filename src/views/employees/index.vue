@@ -8,7 +8,7 @@
         <template v-slot:after>
           <el-button type="warning" @click="$router.push('/import')">导入</el-button>
           <el-button type="danger" @click="exportData">导出</el-button>
-          <el-button type="primary" @click="showDialog = true">新增员工</el-button>
+          <el-button v-if="checkPermission('POINT-USER-ADD')" type="primary" @click="showDialog = true">新增员工</el-button>
         </template>
       </page-tools>
       <!-- 表格组件 -->

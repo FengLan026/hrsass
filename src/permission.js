@@ -22,8 +22,15 @@ router.beforeEach(async(to, from, next) => {
       // 只有放过的时候才去获取用户资料
       // 如果当前有用户资料的id, 表示已经有资料, 如果没有id才需要获取
       if (!store.getters.userId) {
-        await store.dispatch('user/getUserInfo')
+        // async 函数return的内容 用await就可以接收到
+        const { roles } = await store.dispatch('user/getUserInfo')
         // 如果说后续需要根据用户资料获取数据的话, 这里必须改成同步
+        // 筛选用户的可用路由
+        const routes = store.dispatch('permission/filterRoutes', roles.menus) // 筛选得到当前用户可用的动态路由
+        // 动态路由添加到路由表中 默认的路由表 只有静态路由 没有动态路由
+        router.addRoutes([...routes, { path: '*', redirect: '/404', hidden: true }])
+        // 如果进行了addRoutes 请用next(to.path) 否则会导致刷新路由权限失效
+        next(to.path) // 相当于跳到对应的地址  相当于多做一次跳转
       }
       next()
     }
